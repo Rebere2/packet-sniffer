@@ -23,30 +23,35 @@ class Capture:
         
     def _sniff_live(self) -> None:
         """Capture depuis une interface réseau."""
+        kwargs = {
+            "iface": self.interface,
+            "prn": self._packet_handler,
+            "store": False,
+            "stop_filter": lambda _: self.stop_event.is_set()
+        }
+        if self.bpf_filter:
+            kwargs["filter"] = self.bpf_filter
+            
         try:
-            scapy.sniff(
-                iface=self.interface,
-                filter=self.bpf_filter,
-                prn=self._packet_handler,
-                store=False,
-                stop_filter=lambda _: self.stop_event.is_set()
-            )
+            scapy.sniff(**kwargs)
         except Exception as e:
-            # En production, on loggerait l'erreur
-            pass
+            print(f"Erreur capture live: {e}")
             
     def _sniff_offline(self) -> None:
         """Lecture depuis un fichier pcap (mode demo)."""
+        kwargs = {
+            "offline": self.pcap_file,
+            "prn": self._packet_handler,
+            "store": False,
+            "stop_filter": lambda _: self.stop_event.is_set()
+        }
+        if self.bpf_filter:
+            kwargs["filter"] = self.bpf_filter
+            
         try:
-            scapy.sniff(
-                offline=self.pcap_file,
-                filter=self.bpf_filter,
-                prn=self._packet_handler,
-                store=False,
-                stop_filter=lambda _: self.stop_event.is_set()
-            )
-        except Exception:
-            pass
+            scapy.sniff(**kwargs)
+        except Exception as e:
+            print(f"Erreur capture offline: {e}")
             
     def start(self) -> None:
         """Démarre la capture dans un thread séparé."""
