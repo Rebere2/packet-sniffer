@@ -30,9 +30,18 @@ def main():
     # Initialisation des composants
     analyzer = Analyzer()
     
-    # TODO: Ajouter les détecteurs ici dans la Phase 2
-    # analyzer.add_detector(ArpSpoofingDetector())
-    # ...
+    # Ajout des détecteurs
+    from detectors.arp_spoofing import ArpSpoofingDetector
+    from detectors.port_scan import PortScanDetector
+    from detectors.dns_anomaly import DnsAnomalyDetector
+    from detectors.icmp_flood import IcmpFloodDetector
+    from detectors.threat_intel import ThreatIntelDetector
+    
+    analyzer.add_detector(ArpSpoofingDetector())
+    analyzer.add_detector(PortScanDetector())
+    analyzer.add_detector(DnsAnomalyDetector())
+    analyzer.add_detector(IcmpFloodDetector())
+    analyzer.add_detector(ThreatIntelDetector())
     
     # Interface d'affichage
     display = Display(analyzer)
