@@ -23,9 +23,21 @@ Un outil d'analyse réseau en temps réel conçu pour les équipes de sécurité
 
 ## Installation
 
+Il est recommandé d'utiliser un environnement virtuel (venv) pour éviter les conflits de dépendances, particulièrement sur les systèmes récents (comme Arch Linux) où l'installation globale via pip peut être bloquée.
+
 ```bash
 git clone https://github.com/Rebere2/packet-sniffer.git
 cd packet-sniffer
+
+# Création et activation de l'environnement virtuel
+python -m venv .venv
+
+# Si vous êtes sous Bash/Zsh :
+source .venv/bin/activate
+# Si vous êtes sous Fish :
+source .venv/bin/activate.fish
+
+# Installation des dépendances
 pip install -r requirements.txt
 ```
 
