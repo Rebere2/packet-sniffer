@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport d'Analyse Réseau</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .summary-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        .stat-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e1e4e8;
+        }
+        th {
+            background-color: #f6f8fa;
+            font-weight: 600;
+        }
+        .severity-critical { color: #d73a49; font-weight: bold; }
+        .severity-warning { color: #b08800; font-weight: bold; }
+        .severity-info { color: #0366d6; }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #6a737d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Rapport d'Analyse Réseau</h1>
+    <p>Généré le : {{ generation_date }}</p>
+
+    <div class="summary-card">
+        <h2>Résumé de la Capture</h2>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div>Durée d'analyse</div>
+                <div class="stat-value">{{ duration }} s</div>
+            </div>
+            <div class="stat-box">
+                <div>Paquets traités</div>
+                <div class="stat-value">{{ total_packets }}</div>
+            </div>
+            <div class="stat-box" style="border-left-color: #e74c3c;">
+                <div>Alertes détectées</div>
+                <div class="stat-value">{{ alerts|length }}</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Statistiques par Protocole</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Protocole</th>
+                <th>Nombre de paquets</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proto, count in protocols.items() %}
+            <tr>
+                <td>{{ proto }}</td>
+                <td>{{ count }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="2">Aucune donnée disponible.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Journal des Alertes</h2>
+    {% if alerts %}
+    <table>
+        <thead>
+            <tr>
+                <th>Heure</th>
+                <th>Sévérité</th>
+                <th>Détecteur</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alert in alerts %}
+            <tr>
+                <td>{{ alert.time_str }}</td>
+                <td class="severity-{{ alert.severity }}">{{ alert.severity | upper }}</td>
+                <td>{{ alert.detector }}</td>
+                <td>{{ alert.src_ip }}</td>
+                <td>{{ alert.dst_ip or '-' }}</td>
+                <td>{{ alert.message }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Aucune anomalie détectée lors de cette session.</p>
+    {% endif %}
+
+    <div class="footer">
+        Packet Sniffer & Anomaly Detector - Rapport de Sécurité
+    </div>
+
+</body>
+</html>

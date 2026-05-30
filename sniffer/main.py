@@ -67,9 +67,11 @@ def main():
         pass
     finally:
         capture.stop()
-        print("\nArrêt du programme. Génération du rapport... (TODO)")
-        # TODO: Appeler reporter.py pour générer HTML et PCAP
-
+        print("\nArrêt du programme. Génération du rapport...")
+        from sniffer.reporter import Reporter
+        reporter = Reporter(analyzer, args.output_dir)
+        report_path = reporter.generate_html_report()
+        print(f"Rapport généré : {report_path}")
 
 if __name__ == "__main__":
     main()
