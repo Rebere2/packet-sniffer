@@ -44,7 +44,7 @@ class Display:
         
     def _generate_stats_table(self) -> Panel:
         """Génère le tableau des statistiques par protocole."""
-        table = Table(show_header=True, header_style="bold magenta")
+        table = Table(show_header=True, header_style="bold magenta", expand=True)
         table.add_column("Protocole")
         table.add_column("Nombre", justify="right")
         
@@ -70,14 +70,14 @@ class Display:
         
     def _generate_alerts_table(self) -> Panel:
         """Génère le panneau des alertes de sécurité."""
-        table = Table(show_header=True, header_style="bold red")
-        table.add_column("Sévérité")
-        table.add_column("Heure")
+        table = Table(show_header=True, header_style="bold red", expand=True)
+        table.add_column("Sévérité", justify="center")
+        table.add_column("Heure", justify="center")
         table.add_column("Détecteur")
         table.add_column("Message")
         
-        # Affiche les 5 dernières alertes
-        for alert in reversed(self.analyzer.alerts[-5:]):
+        # Affiche les 10 dernières alertes pour mieux remplir l'espace
+        for alert in reversed(self.analyzer.alerts[-10:]):
             t = time.strftime("%H:%M:%S", time.localtime(alert.timestamp))
             style = "bold red" if alert.severity.value == "critical" else "yellow"
             table.add_row(
