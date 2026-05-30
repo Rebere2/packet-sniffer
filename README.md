@@ -32,10 +32,22 @@ pip install -r requirements.txt
 ## Utilisation
 
 ### Mode Démo (Sans privilèges)
-Permet d'analyser un fichier PCAP existant. Idéal pour tester l'outil.
-```bash
-python -m sniffer.main --demo data/samples/port_scan.pcap
-```
+Permet d'analyser un fichier PCAP existant. Trois fichiers d'exemples sont inclus pour tester les capacités de détection :
+
+1. **Scan de ports (Port Scan)** : Simule des requêtes TCP SYN rapides sur de multiples ports.
+   ```bash
+   python -m sniffer.main --demo data/samples/port_scan.pcap
+   ```
+
+2. **Usurpation ARP (ARP Spoofing)** : Simule un conflit d'adresse MAC/IP (Alerte Critique).
+   ```bash
+   python -m sniffer.main --demo data/samples/arp_spoof.pcap
+   ```
+
+3. **Trafic Normal** : Un échange réseau classique (DNS) qui ne déclenche aucune alerte, utile pour tester l'interface de base.
+   ```bash
+   python -m sniffer.main --demo data/samples/normal_traffic.pcap
+   ```
 
 ### Mode Temps Réel (Nécessite root)
 ```bash
