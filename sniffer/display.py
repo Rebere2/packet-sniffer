@@ -55,12 +55,12 @@ class Display:
         
     def _generate_packets_table(self) -> Panel:
         """Génère le tableau des derniers paquets vus."""
-        table = Table(show_header=True, header_style="bold green")
-        table.add_column("Heure")
+        table = Table(show_header=True, header_style="bold green", expand=True)
+        table.add_column("Heure", justify="center")
         table.add_column("Source")
         table.add_column("Destination")
-        table.add_column("Protocole")
-        table.add_column("Taille")
+        table.add_column("Protocole", justify="center")
+        table.add_column("Taille", justify="right")
         
         for p in self.analyzer.recent_packets:
             t = time.strftime("%H:%M:%S", time.localtime(p["timestamp"]))

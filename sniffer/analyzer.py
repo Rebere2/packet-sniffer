@@ -67,7 +67,8 @@ class Analyzer:
             "proto": proto_name,
             "length": len(packet)
         })
-        if len(self.recent_packets) > 20:
+        # On garde jusqu'à 50 paquets pour bien remplir la hauteur des grands terminaux
+        if len(self.recent_packets) > 50:
             self.recent_packets.pop(0)
             
         # Notification des détecteurs
